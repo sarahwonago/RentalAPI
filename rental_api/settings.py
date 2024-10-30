@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     # CUSTOM APPS
     # user management
     "account.apps.AccountConfig",
+    # house management
+    "building.apps.BuildingConfig",
 
 ]
 
