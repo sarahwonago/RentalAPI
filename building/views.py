@@ -8,8 +8,8 @@ from drf_spectacular.utils import extend_schema_view, extend_schema
 
 from account.permissions import IsLandLord
 
-from .models import Building
-from .serializers import BuildingSerializer
+from .models import Building, House
+from .serializers import BuildingSerializer, HouseSerializer
 
 
 @extend_schema_view(
@@ -82,3 +82,31 @@ class BuildingViewSet(ModelViewSet):
     def perform_create(self, serializer):
         # creates a building and links it to the logged in landlord
         serializer.save(landlord=self.request.user)
+
+
+
+class HouseViewSet(ModelViewSet):
+    """
+    Viewset for managing houses.
+
+    Only authenticated landlord can access this endpoints.
+    """
+    permission_classes = [IsAuthenticated, IsLandLord]
+    serializer_class = HouseSerializer
+
+    filter_backends = [
+        DjangoFilterBackend,
+        SearchFilter,
+        OrderingFilter
+    ]
+
+    
+    filterset_fields = ["name", "is_occupied"]
+    search_fields = ["name"]
+    ordering_fields = ['name']
+    ordering = ['is_occupied']
+
+    def get_queryset(self):
+        return House.objects.filter(
+            building__landlord = self.request.user
+        )
