@@ -34,6 +34,8 @@ class Building(models.Model):
         help_text="Number of houses in the building"
     )
 
+    class Meta:
+        unique_together = ["name", "landlord"]
 
     def __str__(self):
         return f"{self.name}|{self.address}- {self.landlord}"
