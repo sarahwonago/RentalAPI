@@ -39,3 +39,35 @@ class Building(models.Model):
 
     def __str__(self):
         return f"{self.name}|{self.address}- {self.landlord}"
+
+
+class House(models.Model):
+    """
+    Model representing a House.
+    """
+
+    id = models.UUIDField(
+        primary_key=True,
+        editable=False,
+        default=uuid.uuid4
+    )
+    name = models.CharField(
+        max_length=255,
+        help_text="The house name/number"
+    )
+    building = models.ForeignKey(
+        Building,
+        related_name="houses",
+        on_delete=models.CASCADE,
+        help_text="The Building of the House"
+    )
+    rent_due_date = models.DateField()
+    rent_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    is_occupied = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ["name", "building"]
+
+
+    def __str__(self):
+        return f"{self.name} in {self.building}"
