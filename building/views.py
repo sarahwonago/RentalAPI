@@ -1,5 +1,10 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.filters import SearchFilter, OrderingFilter
+
+from django_filters.rest_framework import DjangoFilterBackend
+
+from drf_spectacular.utils import extend_schema_view, extend_schema
 
 from account.permissions import IsLandLord
 
@@ -7,6 +12,45 @@ from .models import Building
 from .serializers import BuildingSerializer
 
 
+@extend_schema_view(
+    create=extend_schema(
+        summary="Creates a new building",
+        description="Create a new building.",
+        responses={201: BuildingSerializer},
+        request=BuildingSerializer,
+        tags=['building management']
+    ),
+    list=extend_schema(
+        summary="List all buildings",
+        description="Retrieve a list of all buildings linked to the authenticated landlord.",
+        responses={200: BuildingSerializer(many=True)},
+        tags=['building management']
+    ),
+    retrieve=extend_schema(
+        summary="Retrieve a building",
+        description="Retrieve details of a specific building by UUID.",
+        responses={200: BuildingSerializer},
+        tags=['building management']
+    ),
+    update=extend_schema(
+        summary="Update a building",
+        description="Update details of a specific building.",
+        responses={200: BuildingSerializer},
+        tags=['building management']
+    ),
+    partial_update=extend_schema(
+        summary="Update a building partially",
+        description="Update details of a specific building partially.",
+        responses={200: BuildingSerializer},
+        tags=['building management']
+    ),
+    destroy=extend_schema(
+        summary="Delete a building",
+        description="Delete a specific building.",
+        responses={204: None},
+        tags=['building management']
+    ),
+)
 class BuildingViewSet(ModelViewSet):
     """
     Viewset for managing buildings.
@@ -15,6 +59,18 @@ class BuildingViewSet(ModelViewSet):
     """
     permission_classes = [IsAuthenticated, IsLandLord]
     serializer_class = BuildingSerializer
+
+    filter_backends = [
+        DjangoFilterBackend,
+        SearchFilter,
+        OrderingFilter
+    ]
+
+    
+    filterset_fields = ["name", "address"]
+    search_fields = ["name"]
+    ordering_fields = ['name']
+    ordering = ['name']
 
     def get_queryset(self):
         # fetch buildings for the current logged in landlord
