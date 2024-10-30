@@ -85,6 +85,45 @@ class BuildingViewSet(ModelViewSet):
 
 
 
+@extend_schema_view(
+    create=extend_schema(
+        summary="Creates a new house",
+        description="Create a new house in a building.",
+        responses={201: HouseSerializer},
+        request=HouseSerializer,
+        tags=['house management']
+    ),
+    list=extend_schema(
+        summary="List all houses in a building",
+        description="Retrieve a list of all houses in a building.",
+        responses={200: HouseSerializer(many=True)},
+        tags=['house management']
+    ),
+    retrieve=extend_schema(
+        summary="Retrieve a house",
+        description="Retrieve details of a specific house by UUID.",
+        responses={200: HouseSerializer},
+        tags=['house management']
+    ),
+    update=extend_schema(
+        summary="Update a house",
+        description="Update details of a specific house.",
+        responses={200: HouseSerializer},
+        tags=['house management']
+    ),
+    partial_update=extend_schema(
+        summary="Update a house partially",
+        description="Update details of a specific house partially.",
+        responses={200: HouseSerializer},
+        tags=['house management']
+    ),
+    destroy=extend_schema(
+        summary="Delete a house",
+        description="Delete a specific house.",
+        responses={204: None},
+        tags=['house management']
+    ),
+)
 class HouseViewSet(ModelViewSet):
     """
     Viewset for managing houses.
@@ -99,7 +138,6 @@ class HouseViewSet(ModelViewSet):
         SearchFilter,
         OrderingFilter
     ]
-
     
     filterset_fields = ["name", "is_occupied"]
     search_fields = ["name"]
