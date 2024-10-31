@@ -31,5 +31,6 @@ class HouseSerializer(serializers.ModelSerializer):
             "building",
             "rent_amount",
             "rent_due_date",
-            "is_occupied"
+            "is_occupied",
+            "is_paid"
         ]

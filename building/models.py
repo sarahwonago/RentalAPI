@@ -64,6 +64,7 @@ class House(models.Model):
     rent_due_date = models.DateField()
     rent_amount = models.DecimalField(max_digits=10, decimal_places=2)
     is_occupied = models.BooleanField(default=False)
+    is_paid = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ["name", "building"]
