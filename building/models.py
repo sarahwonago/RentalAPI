@@ -61,8 +61,11 @@ class House(models.Model):
         on_delete=models.CASCADE,
         help_text="The Building of the House"
     )
-    rent_due_date = models.DateField(blank=True, null=True)
     rent_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    default_due_day = models.PositiveIntegerField(
+        default=10,
+        help_text="The default day of the month when rent is due"
+    )
     is_occupied = models.BooleanField(default=False)
     is_paid = models.BooleanField(default=False)
 
