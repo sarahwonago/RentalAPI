@@ -1,6 +1,8 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.decorators import action
+from rest_framework.exceptions import PermissionDenied
 
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -126,7 +128,7 @@ class BuildingViewSet(ModelViewSet):
 )
 class HouseViewSet(ModelViewSet):
     """
-    Viewset for managing houses.
+    Viewset for managing houses within a specific building.
 
     Only authenticated landlord can access this endpoints.
     """
@@ -145,6 +147,26 @@ class HouseViewSet(ModelViewSet):
     ordering = ['is_occupied']
 
     def get_queryset(self):
-        return House.objects.filter(
-            building__landlord = self.request.user
-        )
+        """
+        Filter the queryset to only include houses belonging to a specific building.
+        """
+        building_id = self.kwargs.get('building_id')
+
+        # Verify the building exists and belongs to the current landlord
+        try:
+            building = Building.objects.get(id=building_id, landlord=self.request.user)
+        except Building.DoesNotExist:
+            raise PermissionDenied("You do not have permission to access this building.")
+
+        # Filter houses to only include those under the specified building
+        return House.objects.filter(building=building)
+        
+    def perform_create(self, serializer):
+        """
+        Create a house and link it to a building.
+        """
+        building_id = self.kwargs.get('building_id')
+        building = Building.objects.get(
+            id=building_id,
+            landlord=self.request.user)
+        serializer.save(building=building)

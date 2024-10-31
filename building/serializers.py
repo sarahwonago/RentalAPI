@@ -34,3 +34,11 @@ class HouseSerializer(serializers.ModelSerializer):
             "is_occupied",
             "is_paid"
         ]
+
+    def validate_rent_amount(self, value):
+        """
+        Validate rent amount
+        """
+        if value <= 0:
+            raise serializers.ValidationError("Rent amount must be greater than 0")
+        return value
