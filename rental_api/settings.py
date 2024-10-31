@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     # documentation
     "drf_spectacular",
+    # celery beat
+    "django_celery_beat",
 
     # CUSTOM APPS
     # user management
@@ -172,7 +174,7 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=10),
 }
 
-# settings.py
+# SPECTACULAR settings
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Landlord-Tenant API',
     'DESCRIPTION': 'API for landlords to manage tenants and houses.',
@@ -180,3 +182,12 @@ SPECTACULAR_SETTINGS = {
     'SERVE_INCLUDE_SCHEMA': False,
 }
 
+# CELERY settings
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+
+CELERY_IMPORTS = ('tenant.tasks',)

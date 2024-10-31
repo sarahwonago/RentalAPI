@@ -27,5 +27,23 @@ services:
       - db
       - redis
 
+  celery:
+    build: .
+    command: celery -A rental_api worker --loglevel=info
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - db
+      - redis
+
+  celery-beat:
+    build: .
+    command: celery -A rental_api beat --loglevel=info
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - db
+      - redis
+
 volumes:
   postgres_data:
