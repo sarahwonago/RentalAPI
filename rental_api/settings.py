@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     "lease.apps.LeaseConfig",
     # payment management
     "payment.apps.PaymentConfig",
+    # notifictions
+    "notification.apps.NotificationConfig",
 
 ]
 
