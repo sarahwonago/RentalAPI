@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     "tenant.apps.TenantConfig",
     # lease management
     "lease.apps.LeaseConfig",
+    # payment management
+    "payment.apps.PaymentConfig",
 
 ]
 
