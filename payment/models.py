@@ -21,6 +21,7 @@ class MonthlyRent(models.Model):
         on_delete=models.CASCADE,
         related_name="monthlyrent"
     )
+
     month = models.PositiveSmallIntegerField() # 1-12 January-December
     year = models.PositiveSmallIntegerField()
     due_date = models.DateField()
@@ -55,12 +56,14 @@ class Payment(models.Model):
         editable=False,
         default=uuid.uuid4
     )
+
     lease = models.ForeignKey(
         Lease, 
         on_delete=models.CASCADE, 
         related_name="payments"
         )
-    payment_date = models.DateField(auto_now_add=True)
+    
+    payment_date = models.DateTimeField(auto_now_add=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     mpesa_transaction_id = models.CharField(max_length=250)
 
