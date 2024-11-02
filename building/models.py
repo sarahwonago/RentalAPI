@@ -67,7 +67,6 @@ class House(models.Model):
         help_text="The default day of the month when rent is due"
     )
     is_occupied = models.BooleanField(default=False)
-    is_paid = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ["name", "building"]

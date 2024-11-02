@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     "account.apps.AccountConfig",
     # house management
     "building.apps.BuildingConfig",
+    # tenant management
+    "tenant.apps.TenantConfig",
 
 ]
 
