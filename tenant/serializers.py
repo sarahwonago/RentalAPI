@@ -1,8 +1,13 @@
 from rest_framework import serializers
+from django.contrib.auth import get_user_model
 
 from account.serializers import UserSerializer
 
+
 from .models import Tenant
+
+User = get_user_model()
+
 
 class TenantSerializer(serializers.ModelSerializer):
     """
@@ -10,8 +15,7 @@ class TenantSerializer(serializers.ModelSerializer):
     """
 
     tenant = UserSerializer()
-    house = serializers.StringRelatedField()
-    landlord = serializers.StringRelatedField()
+    landlord = serializers.StringRelatedField(required=False)
 
     class Meta:
         model = Tenant

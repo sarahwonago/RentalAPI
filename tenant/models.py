@@ -33,12 +33,11 @@ class Tenant(models.Model):
         limit_choices_to={'role': 'landlord'}, 
         related_name='tenants'
         )
+    
     # house the tenant rents
     house = models.OneToOneField(
         House,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
+        on_delete=models.CASCADE
     )
    
     
