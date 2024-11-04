@@ -22,6 +22,8 @@ urlpatterns = [
     # user management
     path("api/account/", include("account.urls")),
     # building management
-    path("api/landlord/", include("building.urls")),
+    path("api/buildings/", include("building.urls")),
+    # tenant management
+    path("api/tenants/", include('tenant.urls')),
 
 ]

@@ -30,9 +30,8 @@ class HouseSerializer(serializers.ModelSerializer):
             "name",
             "building",
             "rent_amount",
-            "rent_due_date",
-            "is_occupied",
-            "is_paid"
+            "default_due_day",
+            "is_occupied"
         ]
 
     def validate_rent_amount(self, value):
