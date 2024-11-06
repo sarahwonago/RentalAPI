@@ -2,3 +2,9 @@ from django.urls import path
 
 from rest_framework.routers import DefaultRouter
 
+from .views import TenantRegistrationViewSet
+
+router = DefaultRouter()
+router.register(r'', TenantRegistrationViewSet, basename="tenants")
+
+urlpatterns = router.urls

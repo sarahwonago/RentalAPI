@@ -31,14 +31,9 @@ class Tenant(models.Model):
         User, 
         on_delete=models.CASCADE, 
         limit_choices_to={'role': 'landlord'}, 
-        related_name='tenants'
+        related_name='tenantprofiles'
         )
     
-    # house the tenant rents
-    house = models.OneToOneField(
-        House,
-        on_delete=models.CASCADE
-    )
    
     
     def __str__(self):

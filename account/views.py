@@ -14,7 +14,7 @@ from .serializers import (
     ChangePasswordSerializer, 
     LandlordRegistrationSerializer
     )
-from .permissions import IsSuperAdmin
+from .permissions import IsSuperAdmin, IsLandLord
 
 
 User = get_user_model()
@@ -111,12 +111,12 @@ class LandlordViewSet(viewsets.ModelViewSet):
 )
 class ChangePasswordViewset(viewsets.ViewSet):
     """
-    Viewset for tenants or landlord to change their passwords.
+    Viewset for landlord to change their passwords.
 
     Only users who are authenticated can change their passwords.
     """
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsLandLord]
 
     def create(self, request, *args, **kwargs):
         """

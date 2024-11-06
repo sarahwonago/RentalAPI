@@ -9,19 +9,55 @@ from .models import Tenant
 User = get_user_model()
 
 
-class TenantSerializer(serializers.ModelSerializer):
+class TenantProfileSerializer(serializers.ModelSerializer):
     """
     Serializer for the tenant model.
     """
 
-    tenant = UserSerializer()
-    landlord = serializers.StringRelatedField(required=False)
-
     class Meta:
         model = Tenant
         fields = [
-            "id",
-            "tenant",
-            "house",
-            "landlord"
+            "id"
         ]
+
+
+
+class TenantRegistrationSerializer(serializers.ModelSerializer):
+    """
+    Serializer for tenant registration.
+    """
+
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "phone_number",
+            "date_joined",
+            "role"
+        ]
+
+
+    def create(self, validated_data):
+        """
+        Create a tenant user.
+        """
+
+        # Default password for landlord users.
+        default_password = "tpassword123!"
+
+        # create a landlord user with the validated data and role.
+        user = User.objects.create_user(
+            **validated_data, 
+            role=User.TENANT
+            )
+        
+        # sets the default password for landlords and saves the user.
+        user.set_password(default_password)
+        user.save()
+
+
+        return user

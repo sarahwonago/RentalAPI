@@ -5,6 +5,7 @@ from django.contrib.auth.password_validation import validate_password
 User = get_user_model()
 
 
+
 class LandlordRegistrationSerializer(serializers.ModelSerializer):
     """
     Serializer for landlord registration.
@@ -56,7 +57,7 @@ class UserSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "phone_number",
-            "role",
+            "role"
         ]
         read_only_fields = ["role", "id"]
 
