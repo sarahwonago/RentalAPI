@@ -1,8 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 
-from account.serializers import UserSerializer
-
 
 from .models import Tenant
 
@@ -46,16 +44,17 @@ class TenantRegistrationSerializer(serializers.ModelSerializer):
         Create a tenant user.
         """
 
-        # Default password for landlord users.
+        # Default password for tenant users.
+        # for production change this to randomly produce passwords
         default_password = "tpassword123!"
 
-        # create a landlord user with the validated data and role.
+        # create a tenant user with the validated data and role.
         user = User.objects.create_user(
             **validated_data, 
             role=User.TENANT
             )
         
-        # sets the default password for landlords and saves the user.
+        # sets the default password for tenant and saves the user.
         user.set_password(default_password)
         user.save()
 

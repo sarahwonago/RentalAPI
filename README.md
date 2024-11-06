@@ -22,3 +22,8 @@ The Rental Management System is a backend API built with Django and Django Rest 
 ## Project Setup
 
 ## API EndPoints
+
+## TODO
+- Generate random passwords during reistration
+- Set up SMTP
+- Send passwords to users email for resetting 

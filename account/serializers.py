@@ -29,6 +29,7 @@ class LandlordRegistrationSerializer(serializers.ModelSerializer):
         """
 
         # Default password for landlord users.
+        # for production change this to randomly produce passwords
         default_password = "Lpassword123!"
 
         # create a landlord user with the validated data and role.

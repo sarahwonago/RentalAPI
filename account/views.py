@@ -111,12 +111,12 @@ class LandlordViewSet(viewsets.ModelViewSet):
 )
 class ChangePasswordViewset(viewsets.ViewSet):
     """
-    Viewset for landlord to change their passwords.
+    Viewset for users to change their passwords.
 
     Only users who are authenticated can change their passwords.
     """
 
-    permission_classes = [IsAuthenticated, IsLandLord]
+    permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         """
