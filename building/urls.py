@@ -20,6 +20,11 @@ urlpatterns = [
         'patch': 'partial_update',
         'delete': 'destroy'
     }), name='house-detail'),
+
+    # Manually registered route for `mark_vacant` action
+    path('<uuid:building_id>/houses/<uuid:pk>/vacant/', HouseViewSet.as_view({
+        'post': 'mark_vacant'
+    }), name='house-mark-vacant'),
 ]
 
 urlpatterns += router.urls

@@ -1,9 +1,11 @@
 import uuid
 
 from django.db import models
+from django.contrib.auth import get_user_model
 
-from tenant.models import Tenant
+User = get_user_model()
 
+from building.models import House
 class Lease(models.Model):
     """
     Model representing a lease.
@@ -16,11 +18,18 @@ class Lease(models.Model):
     )
 
     tenant = models.OneToOneField(
-        Tenant, 
+        User, 
         related_name="lease",
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        limit_choices_to={'role': 'tenant'}
         )
     
+    house = models.OneToOneField(
+        House,
+        related_name="lease",
+        on_delete=models.CASCADE
+    )
+
     start_date = models.DateTimeField(auto_now_add=True)
     end_date = models.DateTimeField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
@@ -33,7 +42,3 @@ class Lease(models.Model):
     def __str__(self):
         return f"Lease:{self.tenant}"
     
-    
-
-
-
