@@ -27,7 +27,9 @@ class Lease(models.Model):
     house = models.OneToOneField(
         House,
         related_name="lease",
-        on_delete=models.CASCADE
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
     )
 
     start_date = models.DateTimeField(auto_now_add=True)

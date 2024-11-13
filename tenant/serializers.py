@@ -25,6 +25,9 @@ class TenantRegistrationSerializer(serializers.ModelSerializer):
     Serializer for tenant registration.
     """
 
+    role = serializers.CharField(read_only=True)
+    date_joined = serializers.DateTimeField(read_only=True)
+
     class Meta:
         model = User
         fields = [
