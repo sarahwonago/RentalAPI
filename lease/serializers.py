@@ -9,7 +9,9 @@ class LeaseSerializer(serializers.ModelSerializer):
     """
 
     start_date = serializers.DateTimeField(read_only=True)
-    account = serializers.DecimalField(read_only=True, max_digits=10, decimal_places=2)
+    account = serializers.CharField(read_only=True)
+    tenant = serializers.CharField(source='tenant.username', read_only=True, required=False)
+    house = serializers.CharField(source='house.name', read_only=True, required=False)
 
     class Meta:
         model = Lease

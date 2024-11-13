@@ -17,19 +17,18 @@ class Lease(models.Model):
         default=uuid.uuid4
     )
 
-    tenant = models.OneToOneField(
+    tenant = models.ForeignKey(
         User, 
-        related_name="lease",
+        related_name="leases",
         on_delete=models.CASCADE,
         limit_choices_to={'role': 'tenant'}
         )
     
-    house = models.OneToOneField(
+    house = models.ForeignKey(
         House,
-        related_name="lease",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
+        related_name="leases",
+        on_delete=models.CASCADE,
+        limit_choices_to={'is_occupied': False}
     )
 
     start_date = models.DateTimeField(auto_now_add=True)
@@ -40,6 +39,9 @@ class Lease(models.Model):
         decimal_places=2,
         default=0.00
     )
+
+    class Meta:
+        unique_together = ['tenant', 'house']
 
     def __str__(self):
         return f"Lease:{self.tenant}"

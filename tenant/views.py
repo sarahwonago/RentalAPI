@@ -9,7 +9,10 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
 
-from account.permissions import IsLandLord
+from account.permissions import IsLandLord, IsTenant
+
+from lease.serializers import LeaseSerializer
+from lease.models import Lease
 
 from .serializers import TenantRegistrationSerializer
 from .models import Tenant
@@ -87,5 +90,4 @@ class TenantRegistrationViewSet(viewsets.ModelViewSet):
             tenant=tenant,
             landlord=self.request.user
         )
-        
-    
+
