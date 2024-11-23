@@ -7,41 +7,30 @@ class BuildingSerializer(serializers.ModelSerializer):
     """
     Serializer for the building model.
     """
+
     class Meta:
         model = Building
         fields = [
             "id",
             "name",
             "address",
-            "house_numbers"
+            "house_numbers",
         ]
 
-    def create(self, validated_data):
-        # perform uniqueness check for building creation
-        try:
-            return super().create(validated_data)
-        except IntegrityError as e:
-            raise serializers.ValidationError("Building with that name for this landlord already exists")
-      
-
-    def update(self, instance, validated_data):
-        # perform uniqueness check for full updates
-        try:
-            return super().update(instance, validated_data)
-        except IntegrityError as e:
-            raise serializers.ValidationError("Building with that name for this landlord already exists")
-      
     def validate(self, attrs):
-        # perform uniqueness check for partial updates
-
-        landlord = self.context['request'].user
+        """
+        Ensure no duplicate building name exists for the landlord.
+        """
+        landlord = self.context["request"].user
         building_id = self.instance.id if self.instance else None
 
+        # Check for duplicates
         if Building.objects.filter(
             landlord=landlord,
-            name=attrs.get('name', self.instance.name) #checks name if updated
-        ).exclude(id=building_id).exists(): # exclude ensures we dont flag the current building as a duplicate
-            raise serializers.ValidationError("Building with that name for this landlord already exists")
+            name=attrs.get("name", self.instance.name if self.instance else None)
+        ).exclude(id=building_id).exists():
+            raise serializers.ValidationError({"name": "Building with this name already exists for this landlord."})
+
         return attrs
 
 class HouseSerializer(serializers.ModelSerializer):
@@ -59,13 +48,28 @@ class HouseSerializer(serializers.ModelSerializer):
             "building",
             "rent_amount",
             "default_due_day",
-            "is_occupied"
         ]
 
     def validate_rent_amount(self, value):
         """
-        Validate rent amount
+        Ensure rent amount is positive.
         """
         if value <= 0:
-            raise serializers.ValidationError("Rent amount must be greater than 0")
+            raise serializers.ValidationError("Rent amount must be greater than 0.")
         return value
+
+    def validate(self, attrs):
+        """
+        Ensure no duplicate house name exists within the same building.
+        """
+        building = self.context["view"].kwargs.get("building_id")
+        house_id = self.instance.id if self.instance else None
+
+        # Check for duplicates
+        if House.objects.filter(
+            building=building,
+            name=attrs.get("name", self.instance.name if self.instance else None)
+        ).exclude(id=house_id).exists():
+            raise serializers.ValidationError({"name": "House with this name already exists in the selected building."})
+
+        return attrs

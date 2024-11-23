@@ -172,19 +172,3 @@ class HouseViewSet(ModelViewSet):
             id=building_id,
             landlord=self.request.user)
         serializer.save(building=building)
-
-    @extend_schema(
-    summary="Mark a house as vacant",
-    description="Mark a house as vacant.",
-    responses={200: "House marked vacant"},
-    tags=['house management']
-    )
-    @action(detail=True, methods=['post'])
-    def mark_vacant(self, request, pk=None, building_id=None):
-        """
-        Mark a house as vacant.
-        """
-        house = self.get_object()
-        house.is_occupied = False
-        house.save()
-        return Response({"message":"House marked vacant"},status=status.HTTP_200_OK)
