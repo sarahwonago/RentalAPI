@@ -80,6 +80,8 @@ class BuildingViewSet(ModelViewSet):
             landlord=self.request.user
         )
         return buildings
+
+    
     
     def perform_create(self, serializer):
         # creates a building and links it to the logged in landlord

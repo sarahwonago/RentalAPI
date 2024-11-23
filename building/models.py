@@ -35,7 +35,7 @@ class Building(models.Model):
     )
 
     class Meta:
-        unique_together = ["name", "landlord"]
+        unique_together = ["name", "landlord"] # ensure unique buildings per landlord
 
     def __str__(self):
         return f"{self.name}|{self.address}- {self.landlord}"

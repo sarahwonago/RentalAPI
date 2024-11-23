@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.db import IntegrityError
 
 from .models import Building, House
 
@@ -14,6 +15,14 @@ class BuildingSerializer(serializers.ModelSerializer):
             "address",
             "house_numbers"
         ]
+
+    def create(self, validated_data):
+
+        try:
+            return super().create(validated_data)
+        except IntegrityError as e:
+            raise serializers.ValidationError("Building with that name for this landlord already exists")
+      
 
 
 class HouseSerializer(serializers.ModelSerializer):
