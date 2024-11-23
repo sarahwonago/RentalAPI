@@ -17,13 +17,32 @@ class BuildingSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
-
+        # perform uniqueness check for building creation
         try:
             return super().create(validated_data)
         except IntegrityError as e:
             raise serializers.ValidationError("Building with that name for this landlord already exists")
       
 
+    def update(self, instance, validated_data):
+        # perform uniqueness check for full updates
+        try:
+            return super().update(instance, validated_data)
+        except IntegrityError as e:
+            raise serializers.ValidationError("Building with that name for this landlord already exists")
+      
+    def validate(self, attrs):
+        # perform uniqueness check for partial updates
+
+        landlord = self.context['request'].user
+        building_id = self.instance.id if self.instance else None
+
+        if Building.objects.filter(
+            landlord=landlord,
+            name=attrs.get('name', self.instance.name) #checks name if updated
+        ).exclude(id=building_id).exists(): # exclude ensures we dont flag the current building as a duplicate
+            raise serializers.ValidationError("Building with that name for this landlord already exists")
+        return attrs
 
 class HouseSerializer(serializers.ModelSerializer):
     """
