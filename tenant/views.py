@@ -11,7 +11,6 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
 
 from account.permissions import IsLandLord, IsTenant
 
-from lease.serializers import LeaseSerializer
 from lease.models import Lease
 
 from .serializers import TenantRegistrationSerializer

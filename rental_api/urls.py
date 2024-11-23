@@ -26,6 +26,6 @@ urlpatterns = [
     # tenant management
     path("api/tenants/", include('tenant.urls')),
     # lease management
-    path("api/leases/", include("lease.urls")),
+    #path("api/leases/", include("lease.urls")),
 
 ]
